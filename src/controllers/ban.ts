@@ -1,0 +1,27 @@
+
+import { WritePacket } from "../packeter";
+
+
+async function banUser(userId, time, reason) {
+	try {
+		// ban types: 100-role, 101-chat,102-?,103-?
+		const packet = new WritePacket(29400);			
+		packet.WriteUInt32(-1); 
+		packet.WriteUByte(100); 
+		packet.WriteUInt32(-1)		// gm id
+		packet.WriteUInt32(-1)		// gm id
+		packet.WriteUInt32(userId); 							// localsid
+		packet.WriteUInt32(time); 					// target id
+		packet.WriteString(reason); 					// allways
+		packet.Pack(0x1F44);								// pack opcode and length
+		packet.Send();		
+
+		return
+		
+	} catch (err) {
+		console.log(err, 'Sorry, but something went wrong... ');
+		throw err; // Lançar o erro novamente para que seja tratado por quem chamar a função
+	}
+}
+
+export default banUser
